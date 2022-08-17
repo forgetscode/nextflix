@@ -20,7 +20,7 @@ function Row({title, movies} : Props) {
       const scrollMax = rowRef.current.scrollWidth - rowRef.current.clientWidth
 
 
-      //With loop back at max
+      //loop back at max
       const scrollTo = (
         direction === "left" && scrollLeft != 0 ? scrollLeft - clientWidth :
         direction === "left" && scrollLeft === 0 ? scrollMax :
