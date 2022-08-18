@@ -1,5 +1,5 @@
+import { async } from '@firebase/util'
 import {
-    AuthErrorCodes,
     createUserWithEmailAndPassword,
     onAuthStateChanged,
     signInWithEmailAndPassword,
@@ -11,12 +11,53 @@ import { useRouter } from 'next/router'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { auth } from '../firebase'
 
+interface IAuth {
+    user: User | null
+    signUp: (email: string, password: string) => Promise<void>
+    signIn: (email: string, password: string) => Promise<void>
+    logout: () => Promise<void>
+    error:string | null
+    loading: boolean
+}
 
+const AuthContext = createContext<IAuth>({
+     user: null,
+     signUp: async () => {},
+     signIn: async () => {},
+     logout: async () => {},
+     error:null,
+     loading:false,
+})
 
-function useAuth() {
+interface AuthProviderProps {
+    children: React.ReactNode
+}
+
+export const AuthProvider = ({children}:AuthProviderProps) => {
     const [loading, setLoading] = useState(false)
+    const [initialLoading, setInitialLoading] = useState(true)
     const [user, setUser] = useState<User | null>(null)
+    const [error, setError] = useState(null)
     const router = useRouter()
+
+    useEffect(
+        () =>
+          onAuthStateChanged(auth, (user) => {
+            if (user) {
+              // Logged in...
+              setUser(user)
+              setLoading(false)
+            } else {
+              // Not logged in...
+              setUser(null)
+              setLoading(true)
+              router.push('/login')
+            }
+    
+            setInitialLoading(false)
+          }),
+        [auth]
+      )
 
     const signUp = async (email: string, password: string) => {
         setLoading(true)
@@ -56,8 +97,24 @@ function useAuth() {
         )
     }
 
+    // use memo hook instead of passing in values so it does not have to be recomp
+    const memoedValue = useMemo(() => ({
+        user,
+        signUp,
+        signIn,
+        logout,
+        error,
+        loading
+    }), [ user, loading])
 
-    return user
+
+    return (
+    <AuthContext.Provider value={memoedValue}>
+        {!initialLoading && children}
+    </AuthContext.Provider>
+    )
 }
 
-export default useAuth
+export default function useAuth() {
+    return useContext(AuthContext)
+}
