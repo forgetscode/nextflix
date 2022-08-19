@@ -2,6 +2,7 @@ import { XIcon } from "@heroicons/react/solid"
 import MuiModal from "@mui/material/Modal"
 import { useEffect, useState } from "react"
 import { useRecoilState, useRecoilValue } from "recoil"
+import ReactPlayer from 'react-player/lazy'
 import { modalState, movieState  } from "../atoms/modalAtom"
 import { Element, Genre, Movie } from '../typings'
 
@@ -11,6 +12,7 @@ function Modal() {
     const [movie, setMovie] = useRecoilState(movieState)
     const [trailer, setTrailer] = useState('')
     const [genres, setGenres] = useState<Genre[]>([])
+    const [muted, setMuted] = useState(false)
 
     
     useEffect(() => {
@@ -32,7 +34,7 @@ function Modal() {
               }
 
             if (data?.genres) {
-            setGenres(data.genres)
+                setGenres(data.genres)
             }
         }
         fetchMovie()
@@ -43,6 +45,8 @@ function Modal() {
         setMovie(null)
     }
 
+    console.log(trailer)
+
     return (
         <MuiModal open = {showModal} onClose={handleClose}>
             <>
@@ -51,7 +55,16 @@ function Modal() {
                 bg-[#181818] hover:bg-[#181818]">
                     <XIcon className="h-6 w-6"/>
                 </button>
+
                 <div>
+                    <ReactPlayer
+                        url={`https://www.youtube.com/watch?v=${trailer}`}
+                        width="100%"
+                        height="100%"
+                        style={{ position: 'absolute', top: '0', left: '0' }}
+                        playing
+                        muted={muted}
+                    />
                 </div>
             </>
         </MuiModal>
