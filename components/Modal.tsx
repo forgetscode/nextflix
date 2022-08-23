@@ -6,6 +6,7 @@ import ReactPlayer from 'react-player/lazy'
 import { modalState, movieState  } from "../atoms/modalAtom"
 import { Element, Genre, Movie } from '../typings'
 import { FaPlay } from "react-icons/fa"
+import { useRouter } from "next/router"
 
 function Modal() {
 
@@ -14,18 +15,23 @@ function Modal() {
     const [trailer, setTrailer] = useState('')
     const [genres, setGenres] = useState<Genre[]>([])
     const [muted, setMuted] = useState(false)
+    const router = useRouter()
 
     
     useEffect(() => {
         if (!movie) return
         async function fetchMovie() {
+            let mediaDefault = "movie"
+            if (router.pathname === '/shows') {
+                mediaDefault = 'tv'
+            }
             const data = await fetch(
                 `https://api.themoviedb.org/3/${
-                movie?.media_type === 'tv' ? 'tv' : 'movie'
+                  movie?.media_type === 'tv' ? 'tv' : mediaDefault
                 }/${movie?.id}?api_key=${
-                process.env.NEXT_PUBLIC_API_KEY
+                  process.env.NEXT_PUBLIC_API_KEY
                 }&language=en-US&append_to_response=videos`
-            ).then((response) => response.json())
+              ).then((response) => response.json())
 
             if (data?.videos) {
                 const index = data.videos.results.findIndex(
@@ -45,8 +51,6 @@ function Modal() {
         setShowModal(false)
         setMovie(null)
     }
-
-    console.log(trailer)
 
     return (
         <MuiModal open = {showModal} onClose={handleClose} 

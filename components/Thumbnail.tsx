@@ -13,18 +13,23 @@ function Thumbnail({movie}: Props) {
   
   return (
     <div className="relative h-28 min-w-[180px] cursor-pointer transition duration-200
-    ease-out md:h-36 md:min-w-[260px] md:hover:scale-105"
-    onClick={() => {
-      setCurrentMovie(movie)
-      setShowModal(true)
-    }}>
-        <Image
-            src={`https://image.tmdb.org/t/p/w500${
-            movie.backdrop_path || movie.poster_path
-            }`}
-            className="rounded-sm object-cover md:rounded"
-            layout="fill"
-        />
+    ease-out md:h-36 md:min-w-[260px] md:hover:scale-105">
+      <div className="absolute w-full h-full opacity-0 hover:opacity-100 z-40"
+          onClick={() => {
+            setCurrentMovie(movie)
+            setShowModal(true)
+          }}>
+        <p className="absolute inset-x-0 bottom-0 text-shadow-md text-bold text-md md:text-lg p-1 bg-gradient-to-r from-[#2a2a2a]/30 to-[#2a2a2a]/0 ">
+          {movie.name ? movie.name: movie.title}
+        </p>
+      </div>
+          <Image
+              src={`https://image.tmdb.org/t/p/w500${
+              movie.backdrop_path || movie.poster_path
+              }`}
+              className="rounded-sm object-cover md:rounded"
+              layout="fill"
+          />
     </div>
   )
 }

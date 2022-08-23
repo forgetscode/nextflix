@@ -45,14 +45,6 @@ function Login() {
           objectFit="cover"
         />
 
-      <img
-            src="https://rb.gy/ulxxee"
-            width={150}
-            height={150}
-            className="absolute left-4 top-4 cursor-pointer object-contain 
-            md:left-10 md:top-6"
-        />
-
       <form onSubmit={handleSubmit(onSubmit)}
         className='relative mt-24 space-y-8 rounded bg-black/75 py-10 px-6 md:mt-0
         md:max-w-md md:px-14'>
@@ -70,20 +62,20 @@ function Login() {
           <label className='inline-block w-full'>
             <input type="password" placeholder="Password"
             className='input'
-            {...register("password", {required: true})}/>
+            {...register("password", {required: true, minLength:6})}/>
                         {errors.password && (
               <p className="p-1 text-[13px] font-light  text-red-500">
-                Your password must contain between 4 and 60 characters.
+                Your password must contain between 6 and 60 characters.
               </p>
             )}
           </label>
         </div>
 
-        <button className='w-full rounded bg-[#e50914] py-3
+        <button className='w-full rounded bg-[#2a2a2a] py-3
         font-semibold' onClick={() => setLogin(true)}>Sign In</button>
 
         <div className='text-[gray]'>
-          New to Netflix? {' '}
+          New to Nextflix? {' '}
           <button className='text-white hover:underline' 
             onClick={() => setLogin(false)}>
             Sign up Now

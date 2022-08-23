@@ -67,7 +67,7 @@ export const AuthProvider = ({children}:AuthProviderProps) => {
                 setUser(userCredential.user)
                 router.push("/")
                 setLoading(false)
-            }).catch((error) => alert(error.message))
+            }).catch((error) => alert("Invalid Username or Password"))
             .finally(() => 
                 setLoading(false)
         )
@@ -81,7 +81,7 @@ export const AuthProvider = ({children}:AuthProviderProps) => {
                 setUser(userCredential.user)
                 router.push("/")
                 setLoading(false)
-            }).catch((error) => alert(error.message)).finally(() => 
+            }).catch((error) => alert("Invalid Username or Password")).finally(() => 
                 setLoading(false)
             )
     }
