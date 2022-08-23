@@ -37,7 +37,14 @@ function Modal() {
                 const index = data.videos.results.findIndex(
                   (element: Element) => element.type === 'Trailer'
                 )
-                setTrailer(data.videos?.results[index]?.key)
+                let trailer = null
+                if (index < 0){
+                    trailer = "dQw4w9WgXcQ&ab_channel=RickAstley"
+                }
+                else{
+                    trailer = data.videos?.results[index]?.key
+                }
+                setTrailer(trailer)
               }
 
             if (data?.genres) {

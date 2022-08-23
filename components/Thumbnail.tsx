@@ -2,6 +2,7 @@ import { Movie } from "../typings"
 import Image from 'next/image'
 import { useRecoilState } from "recoil"
 import { modalState, movieState } from "../atoms/modalAtom"
+import ImageWithFallback from "./ImageWithFallback"
 
 interface Props {
     movie: Movie
@@ -23,12 +24,9 @@ function Thumbnail({movie}: Props) {
           {movie.name ? movie.name: movie.title}
         </p>
       </div>
-          <Image
-              src={`https://image.tmdb.org/t/p/w500${
+          <ImageWithFallback src={`https://image.tmdb.org/t/p/w500${
               movie.backdrop_path || movie.poster_path
-              }`}
-              className="rounded-sm object-cover md:rounded"
-              layout="fill"
+              }`} fallbackSrc="https://www.svgrepo.com/show/24585/evernote.svg"
           />
     </div>
   )

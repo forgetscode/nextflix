@@ -12,7 +12,7 @@ export const movieState = atom<Movie | DocumentData | null>({
   default: null,
 })
 
-export const typeState = atom({
-  key: 'typeState',
-  default: "movie",
+export const searchState = atom({
+  key: 'searchState',
+  default: "",
 })

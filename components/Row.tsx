@@ -4,11 +4,12 @@ import { Movie } from '../typings'
 import Thumbnail from './Thumbnail'
 
 interface Props {
-    title: string
-    movies: Movie[]
+    title: string 
+    movies: Movie[] | undefined
 }
 
 function Row({title, movies} : Props) {
+
   const rowRef = useRef<HTMLDivElement>(null)
   const [isMoved, setIsMoved] = useState(false)
 
@@ -24,7 +25,7 @@ function Row({title, movies} : Props) {
       const scrollTo = (
         direction === "left" && scrollLeft != 0 ? scrollLeft - clientWidth :
         direction === "left" && scrollLeft === 0 ? scrollMax :
-        scrollLeft === scrollMax ? 0:
+        Math.floor(scrollLeft) === scrollMax ? 0:
         scrollLeft + clientWidth
       )
       rowRef.current.scrollTo({left: scrollTo, behavior: "smooth"})
@@ -45,7 +46,7 @@ function Row({title, movies} : Props) {
 
         <div ref={rowRef} className="flex items-center space-x-0.5 overflow-x-scroll scrollbar-hide
         md:space-x-2.5 md:p-2">
-          {movies.map((movie) => (
+          {movies?.map((movie) => (
             <Thumbnail key={movie.id} movie={movie}/>
           ))}
         </div>
