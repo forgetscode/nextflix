@@ -9,7 +9,7 @@ import Row from '../components/Row'
 import useAuth from '../hooks/useAuth'
 import { Movie } from '../typings'
 
-function searchRes() {
+function SearchRes() {
 
     const router = useRouter()
 
@@ -80,5 +80,5 @@ function searchRes() {
 
 }
 
-export default searchRes
+export default SearchRes
   
