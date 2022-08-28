@@ -38,7 +38,7 @@ if (loading) return null
           <h1 className="text-3xl md:text-4xl">Account</h1>
           <div className="-ml-0.5 flex items-center gap-x-1.5">
             <p className="text-xs font-semibold text-[#555]">
-            { subscription?.created ? "Member since" + subscription?.created: ""}
+            { subscription?.created ? "Member since " + subscription?.created: ""}
             </p>
           </div>
         </div>
