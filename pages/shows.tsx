@@ -7,6 +7,10 @@ import Row from '../components/Row'
 import useAuth from '../hooks/useAuth'
 import { Movie } from '../typings'
 import requests from '../utils/requests'
+import Plans from '../components/Plans'
+import { getProducts, Product } from '@stripe/firestore-stripe-payments'
+import payments from '../lib/stripe'
+import useSubscription from '../hooks/useSubscription'
 
 interface Props {
   netflixOriginals: Movie[]
@@ -17,6 +21,7 @@ interface Props {
   mysteryShows: Movie[]
   romanceShows: Movie[]
   documentaries: Movie[]
+  products: Product[]
 }
 
 const Shows = ( {
@@ -27,14 +32,19 @@ const Shows = ( {
     romanceShows,
     topRated,
     trendingNow,
+    products,
   }:Props ) => {
 
 
-    const { logout, loading } = useAuth()
+    const { logout, loading, user } = useAuth()
 
     const showModal = useRecoilValue(modalState)
+    
+    const subscription = useSubscription(user)
 
-    if (loading) return null
+    if (loading || subscription === null) return null
+
+    if (!subscription) return <Plans products={products}/>
 
     return (
     <div>
@@ -59,6 +69,13 @@ export default Shows
 
 
 export const getServerSideProps = async () => {
+  const products = await getProducts(payments, {
+    includePrices:true,
+    activeOnly:true,
+  })
+  .then((res) => res)
+  .catch((error) => console.log(error.message))
+
     const [
       netflixOriginals,
       trendingNow,
@@ -89,6 +106,7 @@ export const getServerSideProps = async () => {
         mysteryShows: mysteryShows.results,
         romanceShows: romanceShows.results,
         documentaries: documentaries.results,
+        products,
       },
     }
   }

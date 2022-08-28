@@ -1,12 +1,15 @@
+import { getProducts, Product } from '@stripe/firestore-stripe-payments'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useRecoilValue } from 'recoil'
-import { modalState } from '../atoms/modalAtom'
+import { modalState, movieState } from '../atoms/modalAtom'
 import Banner from '../components/Banner'
 import Header from '../components/Header'
 import Modal from '../components/Modal'
 import Row from '../components/Row'
 import useAuth from '../hooks/useAuth'
+import useList from '../hooks/useList'
+import payments from '../lib/stripe'
 import { Movie } from '../typings'
 import requests from '../utils/requests'
 
@@ -20,6 +23,7 @@ interface Props {
   horrorMovies: Movie[]
   romanceMovies: Movie[]
   documentaries: Movie[]
+  products: Product[]
 }
 
 const Home = ( {
@@ -31,12 +35,15 @@ const Home = ( {
     romanceMovies,
     topRated,
     trendingNow,
+    products,
   }:Props ) => {
   
 
-  const { logout, loading } = useAuth()
+  const { user, loading } = useAuth()
 
   const showModal = useRecoilValue(modalState)
+  const movie = useRecoilValue(movieState)
+  const list = useList(user?.uid)
 
   if (loading) return null
 
@@ -55,6 +62,7 @@ const Home = ( {
         <section className='md:space-y-24'>
           <Row title="Trending Now" movies={trendingNow} />
           <Row title="Top Rated" movies={topRated} />
+          {list.length > 0 && <Row title="My List" movies={list} />}
           <Row title="Action Thrillers" movies={actionMovies} />
           <Row title="Comedies" movies={comedyMovies} />
           <Row title="Scary Movies" movies={horrorMovies} />
@@ -70,6 +78,14 @@ const Home = ( {
 export default Home
 
 export const getServerSideProps = async () => {
+  const products = await getProducts(payments, {
+    includePrices:true,
+    activeOnly:true,
+  })
+  .then((res) => res)
+  .catch((error) => console.log(error.message))
+
+
   const [
     netflixOriginals,
     trendingNow,
@@ -100,6 +116,7 @@ export const getServerSideProps = async () => {
       horrorMovies: horrorMovies.results,
       romanceMovies: romanceMovies.results,
       documentaries: documentaries.results,
+      products,
     },
   }
 }

@@ -70,8 +70,8 @@ function SearchRes() {
                 <h1 className="text-2xl font-bold md:text-3xl text-shadow-md">
                     Search results for {JSON.stringify(router.query.title).replaceAll("%20", " ")}...
                 </h1>
-                {!emptyMovieData ? <Row title="Movies" movies={movies} />: <p>No results</p>}
-                {!emptyTvData ? <Row title="Series" movies={series} />: <p></p>}
+                {!emptyMovieData ? <Row title="Movies" movies={movies!} />: <p>No results</p>}
+                {!emptyTvData ? <Row title="Series" movies={series!} />: <p></p>}
             </section>
           </main>
             {showModal && <Modal />}

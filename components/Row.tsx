@@ -1,11 +1,12 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid'
+import { DocumentData } from 'firebase/firestore'
 import React, { useRef, useState } from 'react'
 import { Movie } from '../typings'
 import Thumbnail from './Thumbnail'
 
 interface Props {
     title: string 
-    movies: Movie[] | undefined
+    movies: Movie[] | DocumentData
 }
 
 function Row({title, movies} : Props) {
@@ -46,13 +47,13 @@ function Row({title, movies} : Props) {
 
         <div ref={rowRef} className="flex items-center space-x-0.5 overflow-x-scroll scrollbar-hide
         md:space-x-2.5 md:p-2">
-          {movies?.map((movie) => (
+          {movies?.map((movie:Movie) => (
             <Thumbnail key={movie.id} movie={movie}/>
           ))}
         </div>
         
-        <ChevronRightIcon className="absolute top-0 bottom-0 right-2 z-50 m-auto h-9 w-9 
-        cursor-pointer opacity-0 transition hover:scale-125 group-hover:opacity-100" 
+        <ChevronRightIcon className={`absolute top-0 bottom-0 right-2 z-50 m-auto h-9 w-9 
+        cursor-pointer opacity-0 transition hover:scale-125 group-hover:opacity-100 ${movies.length < 3 && "hidden"}`}
         onClick={ () => handleClick("right")}/>
       </div>
     </div>

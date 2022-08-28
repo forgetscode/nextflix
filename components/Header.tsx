@@ -1,10 +1,11 @@
-import {ArrowSmRightIcon, BellIcon, FilmIcon, LogoutIcon, SearchIcon} from "@heroicons/react/solid"
+import {ArrowSmRightIcon, BellIcon, FilmIcon, LogoutIcon, SearchIcon, UserIcon} from "@heroicons/react/solid"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import useAuth from "../hooks/useAuth"
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useRecoilState } from "recoil";
 import { useRouter } from "next/router";
+import BasicMenu from "./BasicMenu";
  
 
 interface Inputs {
@@ -59,12 +60,15 @@ return (
         <FilmIcon className="h-6 w-6 cursor-pointer rounded"/>
     </Link>
 
+    <BasicMenu/>
+    
     <ul className="hidden space-x-4 md:flex">
         <Link href="/shows">
             <li className="headerLink">Tv Shows</li>
         </Link>
-        <li className="headerLink">Movies</li>
-        <li className="headerLink">My List</li>
+        <Link href="/myList">
+            <li className="headerLink">My List</li>
+        </Link>
     </ul>
 </div>
 <div className="flex items-center space-x-4 text-sm font-light">
@@ -82,17 +86,12 @@ return (
             </button>
         </form>
     }
-    <BellIcon className="hidden h-6 w-6 sm:inline"/>
+    <Link href="/account">
+        <UserIcon className="hidden h-6 w-6 sm:inline cursor-pointer"/>
+    </Link>
     <LogoutIcon className="h-6 w-6 cursor-pointer rounded"
     onClick={logout}/>
-    <Link href="/account">
-        <img
-        onClick={logout}
-        src="https://rb.gy/g1pwyx"
-        alt=""
-        className="cursor-pointer rounded"
-        />
-    </Link>
+
 </div>
 </header>
 )
