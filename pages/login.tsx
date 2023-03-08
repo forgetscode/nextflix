@@ -39,7 +39,7 @@ function Login() {
       </Head>
 
       <Image
-          src="https://rb.gy/p2hphi"
+          src="https://wpassets.brainstation.io/app/uploads/2017/04/13100509/Netflix-Background.jpg"
           layout="fill"
           className="-z-10 !hidden opacity-60 sm:!inline"
           objectFit="cover"
