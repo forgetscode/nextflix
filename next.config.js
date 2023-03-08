@@ -6,6 +6,6 @@ const withTM = require('next-transpile-modules')([
 module.exports = withTM({
   reactStrictMode: true,
   images: {
-    domains: ['rb.gy', 'image.tmdb.org', "www.svgrepo.com" ],
+    domains: ['wpassets.brainstation.io, 'image.tmdb.org', "www.svgrepo.com" ],
   },
 })
